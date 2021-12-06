@@ -4,6 +4,7 @@ class Board:
         self.data = {}
         self.selections = set()
         self.rows = 0
+        self.won = False
     def addrow(self,lst):
         for v in zip(range(len(lst)),lst):
             try:
@@ -15,6 +16,8 @@ class Board:
         if val in self.data.keys():
             self.selections.add(val)
     def win(self):
+        if (self.won):
+            return False  # Boards cannot win twice.
         row_data = {}
         col_data = {}
         for s in self.selections:
@@ -29,6 +32,7 @@ class Board:
                 except KeyError:
                     col_data[c]=1
         if ( 5 in row_data.values()) or (5 in col_data.values() ):
+            self.won = True
             return True
         return False
     def score(self,lastval):
@@ -74,10 +78,5 @@ if __name__=="__main__":
         for b in boards:
             b.select(d)
             if (b.win()):
-                print("First winning board's score is ", b.score(d))
-                done = True
-                break
-        if (done):
-            break
-
+                print("Board wins with score ", b.score(d))
 
